@@ -1,4 +1,4 @@
-    $ borg init --encryption=repokey 12337@ch-s012.rsync.net:backup/x1/
+    $ borg init --encryption=repokey [REPO]
     $ cp ik-borg-backup.{service,timer} /usr/lib/systemd/user/
     $ cp ik-borg-backup /usr/local/bin/
 
