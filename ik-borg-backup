@@ -1,0 +1,60 @@
+#!/bin/sh
+
+REPOSITORY=$(cat "$HOME/.config/ik-borg-backup/repository")
+export BORG_PASSPHRASE=$(cat "$HOME/.secrets/borg-passwd")
+export BORG_REMOTE_PATH=/usr/local/bin/borg1/borg1
+
+borg create -v --stats --progress \
+     $REPOSITORY::'{hostname}-{user}-{now:%Y-%m-%d_%H-%M}' \
+     "/home/$USER/" \
+     --exclude '/home/*/.cache' \
+     --exclude '/home/*/.IdeaIC*' \
+     --exclude '/home/*/.virtualenvs' \
+     --exclude '/home/*/.xsession-errors*' \
+     --exclude '/home/*/.thumbnails' \
+     --exclude '/home/*/.texlive' \
+     --exclude '/home/*/.pyenv' \
+     --exclude '/home/*/.password-store' \
+     --exclude '/home/*/.kodi' \
+     --exclude '/home/*/.java' \
+     --exclude '/home/*/.ipython' \
+     --exclude '/home/*/.keras' \
+     --exclude '/home/*/.local' \
+     --exclude '/home/*/.claws-mail' \
+     --exclude '/home/*/.config/chromium' \
+     --exclude '/home/*/.config/discord' \
+     --exclude '/home/*/.zsh_history' \
+     --exclude '/home/*/.oh-my-zsh' \
+     --exclude '/home/*/.electrum' \
+     --exclude '/home/*/.m2' \
+     --exclude '/home/*/.macromedia' \
+     --exclude '/home/*/.mono' \
+     --exclude '/home/*/.mozilla' \
+     --exclude '/home/*/.thunderbird' \
+     --exclude '/home/*/.spacemacs' \
+     --exclude '/home/*/.sylpheed-2.0' \
+     --exclude '/home/*/.secrets' \
+     --exclude '/home/*/.mysql_history' \
+     --exclude '/home/*/.mythtv' \
+     --exclude '/home/*/.emacs.d' \
+     --exclude '/home/*/**/.git' \
+     --exclude '/home/*/**/.stversions' \
+     --exclude '/home/*/**/.stfolder' \
+     --exclude '/home/*/**/.thumbnails' \
+     --exclude '/home/*/Downloads' \
+     --exclude '/home/*/Music' \
+     --exclude '/home/*/Media' \
+     --exclude '/home/*/Videos' \
+     --exclude '/home/*/Vaults' \
+     --exclude '/home/*/Projects' \
+     --exclude '/home/*/system' 
+
+
+# Use the `prune` subcommand to maintain 7 daily, 4 weekly and 6 monthly
+# archives of THIS machine. The '{hostname}-' prefix is very important to
+# limit prune's operation to this machine's archives and not apply to
+# other machine's archives also.
+borg prune -v --list $REPOSITORY --prefix '{hostname}-' \
+    --keep-daily=7 --keep-weekly=4 --keep-monthly=6
+
+unset BORG_PASSPHRASE

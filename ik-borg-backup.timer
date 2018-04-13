@@ -1,0 +1,10 @@
+[Unit]
+Description=Run ik-borg-backup every day after work
+
+[Timer]
+OnCalendar=16:30
+AccuracySec=1h
+Persistent=yes
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,6 @@
+[Unit]
+Description=Isak Borg Backup (daily)
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/ik-borg-backup
